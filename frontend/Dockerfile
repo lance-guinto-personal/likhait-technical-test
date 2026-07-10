@@ -1,12 +1,12 @@
-FROM node:18-alpine
+FROM node:18-slim
 
 WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Delete node_modules folder and package-lock.json Install dependencies
+RUN rm -rf node_modules package-lock.json && npm install
 
 # Copy the rest of the application
 COPY . .
