@@ -126,6 +126,10 @@ Clean separation between frontend and backend enables scalability and maintainab
 
 ## Quick Start
 
+### Prerequisites
+
+On Windows machines, a working installation of Ruby with DevKit will be required, if using the Manual Setup below, or for executing bundle commands outside of Docker. Download an installer of version 3.3.7 here: https://rubyinstaller.org/downloads/archives/ - note that installing a version that isn't 3.3.7 would require modification of the `backend/Gemfile`.
+
 ### Using Docker (Recommended)
 
 ```bash
@@ -139,6 +143,28 @@ docker compose up
 # Frontend: http://localhost:5173
 # Backend API: http://localhost:3000/api
 ```
+#### Issues
+If using a Windows machine and encountering issues bringing the containers up, consider the following changes to the `frontend/Dockerfile`:
+- Change `FROM node:18-alpine` to `FROM node:18-slim`
+- Add command `rm -rf node_modules package-lock.json` before `npm install`
+
+And the following changes to the `backed/Dockerfile`:
+- Add `libyaml-dev` as a package to install under `# Install base packages`:
+```
+apt-get install --no-install-recommends -y build-essential ca-certificates default-mysql-client default-libmysqlclient-dev libyaml-dev git && \
+```
+
+And the following changes to the `docker-compose.yml`, under the `command` section of the `backend` service:
+```
+sh -c "
+        bundle install &&
+        bundle exec rails db:migrate &&
+        bundle exec rails db:seed &&
+        bundle exec rails server -b 0.0.0.0
+      "
+```
+
+
 
 ### Manual Setup
 
