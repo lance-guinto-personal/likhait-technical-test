@@ -2,10 +2,13 @@ import React, { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import HistoryPage from "./pages/HistoryPage";
 import { COLORS } from "./constants/colors";
+import { Modal } from "./vibes";
+import { CategoryForm } from "./components/CategoriesForm";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("history");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const appStyle: React.CSSProperties = {
     display: "flex",
@@ -30,10 +33,18 @@ function App() {
         onNavigate={setCurrentPage}
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={handleToggleSidebar}
+  		onOpenSettings={() => setIsSettingsOpen(true)}
       />
       <main style={mainStyle}>
         {currentPage === "history" && <HistoryPage />}
       </main>
+	  <Modal
+	  	isOpen={isSettingsOpen}
+		onClose={() => setIsSettingsOpen(false)}
+		title="Settings"
+	  >
+		<CategoryForm />
+	  </Modal>
     </div>
   );
 }
