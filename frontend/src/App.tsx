@@ -23,7 +23,6 @@ function App() {
 			setLoading(true);
 			const data = await fetchCategories();
 			setCategories(data);
-			console.log("Categories fetched:", categories);
 		} catch (error) {
 			console.error("Error fetching categories:", error);
 		} finally {
