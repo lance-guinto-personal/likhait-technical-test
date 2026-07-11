@@ -54,6 +54,7 @@ class Api::ExpensesController < ApplicationController
       amount: expense.amount.to_f,
       category: expense.category.name,
       date: expense.date.to_s,
+	  payer_name: expense.payer_name,
       created_at: expense.created_at,
       updated_at: expense.updated_at
     }
