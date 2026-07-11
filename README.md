@@ -126,6 +126,10 @@ Clean separation between frontend and backend enables scalability and maintainab
 
 ## Quick Start
 
+### Prerequisites
+
+On Windows machines, a working installation of Ruby with DevKit will be required, if using the Manual Setup below, or for executing bundle commands outside of Docker. Download an installer of version 3.3.7 here: https://rubyinstaller.org/downloads/archives/ - note that installing a version that isn't 3.3.7 would require modification of the `backend/Gemfile`.
+
 ### Using Docker (Recommended)
 
 ```bash
@@ -139,7 +143,7 @@ docker compose up
 # Frontend: http://localhost:5173
 # Backend API: http://localhost:3000/api
 ```
-
+#### Issues
 If using a Windows machine and encountering issues bringing the containers up, consider the following changes to the `frontend/Dockerfile`:
 - Change `FROM node:18-alpine` to `FROM node:18-slim`
 - Add command `rm -rf node_modules package-lock.json` before `npm install`
