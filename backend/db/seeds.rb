@@ -22,6 +22,14 @@ created_categories = categories.map do |cat_name|
   Category.create!(name: cat_name)
 end
 
+payer_names = [
+  'John Doe',
+  'Jane Smith',
+  'Mike Johnson',
+  'Sarah Lee',
+  'Emily Chen'
+]
+
 puts "Created #{created_categories.count} categories"
 
 # Generate expenses from January 2024 to February 18, 2026
@@ -146,6 +154,7 @@ while current_date <= end_date
         amount: amount,
         category: category,
         date: current_date,
+        payer_name: payer_names.sample,
         created_at: current_date,
         updated_at: current_date
       )
