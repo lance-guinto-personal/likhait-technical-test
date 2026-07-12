@@ -32,6 +32,15 @@ export function useExpenseForm({ initialData, onSubmit }: UseExpenseFormProps) {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<ExpenseFormData> = {};
+		const selectedDate = new Date(formData.date);
+		const today = new Date();
+
+		today.setHours(0, 0, 0, 0);
+		selectedDate.setHours(0, 0, 0, 0);
+
+		if (selectedDate > today) {
+			newErrors.date = "Date cannot be set to a future date";
+		}
 
     if (!formData.amount || Number(formData.amount) <= 0) {
       newErrors.amount = "Amount must be greater than 0";

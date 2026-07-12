@@ -33,7 +33,8 @@ RSpec.describe "Api::Expenses", type: :request do
             description: "Team Lunch",
             amount: 150.50,
             category_id: food_category.id,
-            date: Date.today
+            date: Date.today,
+            payer_name: "Lance"
           }
         }
       end
@@ -47,6 +48,7 @@ RSpec.describe "Api::Expenses", type: :request do
         json = JSON.parse(response.body)
         expect(json["description"]).to eq("Team Lunch")
         expect(json["amount"]).to eq("150.5")
+        expect(Expense.last.payer_name).to eq("Lance")
       end
     end
 

@@ -140,6 +140,28 @@ docker compose up
 # Backend API: http://localhost:3000/api
 ```
 
+If using a Windows machine and encountering issues bringing the containers up, consider the following changes to the `frontend/Dockerfile`:
+- Change `FROM node:18-alpine` to `FROM node:18-slim`
+- Add command `rm -rf node_modules package-lock.json` before `npm install`
+
+And the following changes to the `backed/Dockerfile`:
+- Add `libyaml-dev` as a package to install under `# Install base packages`:
+```
+apt-get install --no-install-recommends -y build-essential ca-certificates default-mysql-client default-libmysqlclient-dev libyaml-dev git && \
+```
+
+And the following changes to the `docker-compose.yml`, under the `command` section of the `backend` service:
+```
+sh -c "
+        bundle install &&
+        bundle exec rails db:migrate &&
+        bundle exec rails db:seed &&
+        bundle exec rails server -b 0.0.0.0
+      "
+```
+
+
+
 ### Manual Setup
 
 #### Backend
