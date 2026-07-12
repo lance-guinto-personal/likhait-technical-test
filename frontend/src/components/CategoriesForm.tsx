@@ -18,7 +18,6 @@ export function CategoryForm({
   onCancel,
   submitLabel = "Add Category",
 }: CategoryFormProps) {
-	console.log("existingCategories:", existingCategories);
 	const { formData, errors, isSubmitting, handleChange, handleSubmit } = useCategoryForm({
 		initialData,
 		onSubmit,
@@ -36,9 +35,14 @@ export function CategoryForm({
 
 	const formStyle: React.CSSProperties = {
 		display: "flex",
+		flex: 1,
 		flexDirection: "column",
 		gap: "1rem",
-	};	
+	};
+
+	const tableStyle: React.CSSProperties = {
+		flex: 1,
+	};
 	
 	const buttonGroupStyle: React.CSSProperties = {
 		display: "flex",
@@ -48,11 +52,13 @@ export function CategoryForm({
 
   return (
 		<div style={divStyle}>
-			<ItemTable 
-				columns={categoryColumns} 
-				data={existingCategories?.map((name) => ({ name })) || []} 
-				emptyMessage="No categories found." 
-			/>
+			<div style={tableStyle}>
+				<ItemTable 
+					columns={categoryColumns} 
+					data={existingCategories?.map((name) => ({ name })) || []} 
+					emptyMessage="No categories found." 
+				/>
+			</div>
 			<form onSubmit={handleSubmit} style={formStyle}>
 				<TextField
 					label="Name"

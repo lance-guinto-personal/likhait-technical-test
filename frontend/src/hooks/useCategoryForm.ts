@@ -34,10 +34,23 @@ export function useCategoryForm({initialData, onSubmit}: UseCategoryFormProps) {
 
 	const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+		console.log("Submitting form with data:", formData);
     if (!validateForm()) {
       return;
     }
+		setIsSubmitting(true);
+		try {
+			await onSubmit(formData);
+			// Reset form on success
+			setFormData({
+				name: "",
+			});
+			setErrors({});
+		} catch (error) {
+			console.error("Form submission error:", error);
+		} finally {
+			setIsSubmitting(false);
+		}
 	}
 	
 	const resetForm = () => {

@@ -75,7 +75,9 @@ function App() {
   			onOpenSettings={() => setIsSettingsOpen(true)}
       />
 			{loading ? (
-          <div style={loadingStyle}>Loading...</div>
+  				<main style={mainStyle}>
+						<div style={loadingStyle}>Loading...</div>
+					</main>
         ) : (					
 					<main style={mainStyle}>
 						{currentPage === "history" && <HistoryPage categoryNames={categories.map((cat) => cat.name)} />}
@@ -86,6 +88,7 @@ function App() {
 				isOpen={isSettingsOpen}
 				onClose={() => setIsSettingsOpen(false)}
 				title="Settings"
+				maxWidth="800px"
 				>
 				<CategoryForm 
 					existingCategories={categories.map((cat) => cat.name)}
