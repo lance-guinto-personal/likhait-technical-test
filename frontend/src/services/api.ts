@@ -46,6 +46,20 @@ export async function fetchCategories(): Promise<
   return response.json();
 }
 
+export async function createCategory(data: { name: string }): Promise<void> {
+  const response = await fetch(`${API_BASE_URL}/categories`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ category: data }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create category");
+  }
+}
+
 /**
  * Create a new expense
  */
@@ -59,6 +73,7 @@ export async function createExpense(data: ExpenseFormData): Promise<Expense> {
     amount: data.amount,
     category_id: category?.id,
     date: data.date,
+    payer_name: "Lance",
   };
 
   const response = await fetch(`${API_BASE_URL}/expenses`, {

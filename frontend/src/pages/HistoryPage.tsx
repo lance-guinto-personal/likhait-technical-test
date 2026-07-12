@@ -9,7 +9,11 @@ import { ExpenseForm } from "../components/ExpenseForm";
 import { Modal, Button } from "../vibes";
 import { COLORS } from "../constants/colors";
 
-const HistoryPage: React.FC = () => {
+interface HistoryPageProps {
+  categoryNames: string[];
+}
+
+const HistoryPage: React.FC<HistoryPageProps> = ({ categoryNames }) => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -187,6 +191,7 @@ const HistoryPage: React.FC = () => {
         <ExpenseForm
           onSubmit={handleAddExpense}
           onCancel={() => setIsModalOpen(false)}
+					availableCategories={categoryNames}
         />
       </Modal>
     </div>

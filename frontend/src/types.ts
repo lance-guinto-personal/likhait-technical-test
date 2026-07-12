@@ -1,6 +1,10 @@
 /**
  * Type definitions for the Expense Tracking System
  */
+export interface Category {
+  id: number;
+  name: string;
+}
 
 export interface Expense {
   id: number;
@@ -17,6 +21,10 @@ export interface ExpenseFormData {
   description: string;
   category: string;
   date: string;
+}
+
+export interface CategoryFormData {
+  name: string;
 }
 
 export interface MonthlySummary {
