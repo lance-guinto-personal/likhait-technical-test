@@ -8,6 +8,7 @@ interface CategoryFormProps {
   initialData?: Partial<CategoryFormData>;
   onSubmit: (data: CategoryFormData) => Promise<void>;
   onCancel?: () => void;
+	onError?: (message: string) => void;
   submitLabel?: string;
 }
 
@@ -16,11 +17,20 @@ export function CategoryForm({
 	initialData,
 	onSubmit,
   onCancel,
+	onError,
   submitLabel = "Add Category",
 }: CategoryFormProps) {
 	const { formData, errors, isSubmitting, handleChange, handleSubmit } = useCategoryForm({
 		initialData,
-		onSubmit,
+		onSubmit: async (data) => {
+			try {
+				await onSubmit(data);
+			} catch (error) {
+				if (onError) {
+					onError?.("Failed to add category. Make sure the category name is unique (case-insensitive) and try again.");
+				}
+			}
+		},
 	});
 
 	const categoryColumns = [

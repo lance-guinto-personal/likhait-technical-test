@@ -4,41 +4,14 @@ import HistoryPage from "./pages/HistoryPage";
 import { COLORS } from "./constants/colors";
 import { Modal } from "./vibes";
 import { CategoryForm } from "./components/CategoriesForm";
-import { Category, CategoryFormData } from "./types";
-import { createCategory, fetchCategories } from "./services/api";
+import { useCategoryData } from "./hooks/useCategoryData";
 
 function App() {
-	const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState("history");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-	const [categories, setCategories] = useState<Category[]>([]);
-
-	useEffect(() => {
-		getCategories();
-	}, []);	
-	
-	const getCategories = async () => {
-		try {
-			setLoading(true);
-			const data = await fetchCategories();
-			setCategories(data);
-		} catch (error) {
-			console.error("Error fetching categories:", error);
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const handleAddCategory = async (data: CategoryFormData) => {
-		try {
-			await createCategory(data);
-			getCategories();
-		} catch (error) {
-			console.error("Error creating category:", error);
-			throw error;
-		}
-	};
+	const { categories, loading, handleAddCategory} = useCategoryData();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const appStyle: React.CSSProperties = {
     display: "flex",
@@ -94,7 +67,16 @@ function App() {
 					existingCategories={categories.map((cat) => cat.name)}
 					onSubmit={handleAddCategory} 
 					submitLabel="Add Category"
+					onCancel={() => setIsSettingsOpen(false)}
+					onError={(message) => setErrorMessage(message)}
 				/>
+			</Modal>
+			<Modal
+				isOpen={Boolean(errorMessage)}
+				onClose={() => setErrorMessage(null)}
+				title="Error"
+			>
+				<p>{errorMessage}</p>
 			</Modal>
     </div>
   );
