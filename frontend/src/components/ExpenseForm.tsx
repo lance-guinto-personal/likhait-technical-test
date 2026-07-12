@@ -79,6 +79,18 @@ export function ExpenseForm({
         required
       />
 
+	  
+      <TextField
+        label="Payer Name"
+        type="text"
+        placeholder="Enter payer name"
+        value={formData.payer_name}
+        onChange={(e) => handleChange("payer_name", e.target.value)}
+        error={errors.payer_name}
+        fullWidth
+        required
+      />
+
       <TextField
         label="Date"
         type="date"

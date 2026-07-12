@@ -16,6 +16,7 @@ export interface ExpenseFormData {
   amount: string;
   description: string;
   category: string;
+  payer_name: string;
   date: string;
 }
 

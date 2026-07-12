@@ -66,9 +66,9 @@ RSpec.describe "Api::Expenses", type: :request do
 
         expect {
           post "/api/expenses", params: invalid_params, as: :json
-        }.to change(Expense, :count).by(1)
+        }.not_to change(Expense, :count)
 
-        expect(response).to have_http_status(:created)
+        expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it "with empty descriptions" do
@@ -84,9 +84,27 @@ RSpec.describe "Api::Expenses", type: :request do
 
         expect {
           post "/api/expenses", params: invalid_params, as: :json
-        }.to change(Expense, :count).by(1)
+        }.not_to change(Expense, :count)
 
-        expect(response).to have_http_status(:created)
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+
+	  it "with empty payer names" do
+        invalid_params = {
+          expense: {
+            description: "",
+            amount: 100.00,
+            category_id: food_category.id,
+            date: Date.today,
+            payer_name: ""
+          }
+        }
+
+        expect {
+          post "/api/expenses", params: invalid_params, as: :json
+        }.not_to change(Expense, :count)
+
+        expect(response).to have_http_status(:unprocessable_entity)
       end
     end
   end
