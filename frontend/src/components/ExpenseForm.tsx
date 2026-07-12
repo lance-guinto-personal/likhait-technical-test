@@ -13,6 +13,7 @@ interface ExpenseFormProps {
   onSubmit: (data: ExpenseFormData) => Promise<void>;
   onCancel?: () => void;
   submitLabel?: string;
+  availableCategories?: string[];
 }
 
 export function ExpenseForm({
@@ -20,6 +21,7 @@ export function ExpenseForm({
   onSubmit,
   onCancel,
   submitLabel = "Add Expense",
+  availableCategories,
 }: ExpenseFormProps) {
   const { formData, errors, isSubmitting, handleChange, handleSubmit } =
     useExpenseForm({
@@ -39,10 +41,13 @@ export function ExpenseForm({
     marginTop: "0.5rem",
   };
 
-  const categoryOptions = EXPENSE_CATEGORIES.map((category) => ({
-    value: category,
-    label: category,
-  }));
+  const categoryOptions = (availableCategories && availableCategories.length > 0 ? 
+  	availableCategories : 
+		EXPENSE_CATEGORIES)
+		.map((category) => ({
+			value: category,
+			label: category,
+  	}));
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
@@ -75,6 +80,18 @@ export function ExpenseForm({
         value={formData.category}
         onChange={(e) => handleChange("category", e.target.value)}
         error={errors.category}
+        fullWidth
+        required
+      />
+
+	  
+      <TextField
+        label="Payer Name"
+        type="text"
+        placeholder="Enter payer name"
+        value={formData.payer_name}
+        onChange={(e) => handleChange("payer_name", e.target.value)}
+        error={errors.payer_name}
         fullWidth
         required
       />

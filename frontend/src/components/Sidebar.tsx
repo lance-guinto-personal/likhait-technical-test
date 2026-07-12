@@ -6,6 +6,7 @@ interface SidebarProps {
   currentPage?: string;
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
+  onOpenSettings?: () => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({
@@ -13,6 +14,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   currentPage = "history",
   isCollapsed = false,
   onToggleCollapse,
+	onOpenSettings,
 }) => {
   const sidebarStyle: React.CSSProperties = {
     width: isCollapsed ? "80px" : "360px",
@@ -107,6 +109,23 @@ const Sidebar: React.FC<SidebarProps> = ({
     display: isCollapsed ? "none" : "inline",
   };
 
+	const settingsButtonStyle: React.CSSProperties = {
+		width: "100%",
+		padding: isCollapsed ? "16px" : "16px 24px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: isCollapsed ? "center" : "flex-start",
+    gap: "16px",
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "18px",
+    fontWeight: 500,
+    color: COLORS.primary.p09,
+    textAlign: "left",
+    transition: "background 0.2s",
+  };
+
   return (
     <aside style={sidebarStyle}>
       <div style={headerStyle}>
@@ -169,6 +188,24 @@ const Sidebar: React.FC<SidebarProps> = ({
           <span style={navTextStyle}>History</span>
         </button>
       </nav>
+	  <button
+			style={settingsButtonStyle}
+      onClick={() => onOpenSettings?.()}
+      onMouseEnter={(e) => {
+				e.currentTarget.style.background = COLORS.primary.p03;
+      }}
+			onMouseLeave={(e) => {
+				e.currentTarget.style.background = "transparent";				
+			}}
+		>
+			<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+				{/* Center circle */}
+				<circle cx="12" cy="12" r="3" />
+				{/* Gear teeth lines */}
+				<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+			</svg>
+			<span style={navTextStyle}>Settings</span>
+	  </button>
     </aside>
   );
 };

@@ -126,6 +126,7 @@ export function CalendarExpenseTable({
             <th style={thStyle}>Description</th>
             <th style={thStyle}>Category</th>
             <th style={thStyle}>Amount</th>
+            <th style={thStyle}>Payer</th>
             <th style={{ ...thStyle, textAlign: "center" }}>Actions</th>
           </tr>
         </thead>
@@ -149,6 +150,7 @@ export function CalendarExpenseTable({
               <td style={{ ...tdStyle, textAlign: "left", fontWeight: 600 }}>
                 {formatCurrency(expense.amount)}
               </td>
+			  <td style={tdStyle}>{expense.payer_name}</td>
               <td style={{ ...tdStyle, textAlign: "center" }}>
                 <div style={actionButtonsStyle}>
                   <Button
@@ -192,6 +194,7 @@ export function CalendarExpenseTable({
               amount: editingExpense.amount.toString(),
               description: editingExpense.description,
               category: editingExpense.category,
+			  payer_name: editingExpense.payer_name,
               date: formatDate(new Date(editingExpense.date)),
             }}
             onSubmit={handleUpdate}

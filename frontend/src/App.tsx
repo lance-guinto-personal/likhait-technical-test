@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Sidebar from "./components/Sidebar";
 import HistoryPage from "./pages/HistoryPage";
 import { COLORS } from "./constants/colors";
+import { Modal } from "./vibes";
+import { CategoryForm } from "./components/CategoriesForm";
+import { useCategoryData } from "./hooks/useCategoryData";
 
 function App() {
   const [currentPage, setCurrentPage] = useState("history");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+	const { categories, loading, handleAddCategory} = useCategoryData();
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const appStyle: React.CSSProperties = {
     display: "flex",
@@ -17,7 +23,16 @@ function App() {
     flex: 1,
     marginLeft: isSidebarCollapsed ? "80px" : "360px",
     transition: "margin-left 0.3s ease",
-  };
+  };	
+	
+	const loadingStyle: React.CSSProperties = {
+		display: "flex",
+		justifyContent: "center",
+		alignItems: "center",
+		padding: "48px",
+		fontSize: "18px",
+		color: COLORS.secondary.s08,
+	};
 
   const handleToggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
@@ -30,10 +45,39 @@ function App() {
         onNavigate={setCurrentPage}
         isCollapsed={isSidebarCollapsed}
         onToggleCollapse={handleToggleSidebar}
+  			onOpenSettings={() => setIsSettingsOpen(true)}
       />
-      <main style={mainStyle}>
-        {currentPage === "history" && <HistoryPage />}
-      </main>
+			{loading ? (
+  				<main style={mainStyle}>
+						<div style={loadingStyle}>Loading...</div>
+					</main>
+        ) : (					
+					<main style={mainStyle}>
+						{currentPage === "history" && <HistoryPage categoryNames={categories.map((cat) => cat.name)} />}
+					</main>
+				)
+			}
+			<Modal
+				isOpen={isSettingsOpen}
+				onClose={() => setIsSettingsOpen(false)}
+				title="Settings"
+				maxWidth="800px"
+				>
+				<CategoryForm 
+					existingCategories={categories.map((cat) => cat.name)}
+					onSubmit={handleAddCategory} 
+					submitLabel="Add Category"
+					onCancel={() => setIsSettingsOpen(false)}
+					onError={(message) => setErrorMessage(message)}
+				/>
+			</Modal>
+			<Modal
+				isOpen={Boolean(errorMessage)}
+				onClose={() => setErrorMessage(null)}
+				title="Error"
+			>
+				<p>{errorMessage}</p>
+			</Modal>
     </div>
   );
 }
